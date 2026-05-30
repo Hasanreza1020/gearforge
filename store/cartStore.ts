@@ -116,7 +116,7 @@ export const useCartStore = create<CartState>()(
       getItemCount: () => get().items.reduce((sum, item) => sum + item.quantity, 0),
     }),
     {
-      name: 'gearforge-cart',
+      name: 'theplayers-cart',
       partialize: (state) => ({
         items: state.items,
         deliveryOptionId: state.deliveryOptionId,

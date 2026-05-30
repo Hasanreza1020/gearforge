@@ -11,11 +11,13 @@ import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
-  { href: '/shop', label: 'Shop' },
-  { href: '/shop?category=gaming-mice', label: 'Mice' },
-  { href: '/shop?category=keyboards', label: 'Keyboards' },
-  { href: '/shop?category=headsets', label: 'Headsets' },
+  { href: '/shop', label: 'All' },
+  { href: '/shop?category=consoles', label: 'Consoles' },
   { href: '/shop?category=controllers', label: 'Controllers' },
+  { href: '/shop?category=retro-games', label: 'Retro' },
+  { href: '/shop?category=headphones', label: 'Headphones' },
+  { href: '/shop?category=cds', label: "CD's" },
+  { href: '/shop?category=collectibles', label: 'Collectibles' },
 ]
 
 export default function Navbar() {
@@ -51,12 +53,15 @@ export default function Navbar() {
                 className="w-6 h-6 text-cyan-400 group-hover:text-cyan-300 transition-colors"
                 style={{ filter: 'drop-shadow(0 0 8px rgba(0,245,255,0.8))' }}
               />
-              <span
-                className="font-['Orbitron'] text-xl font-black text-white tracking-wider group-hover:text-cyan-400 transition-colors"
-                style={{ textShadow: '0 0 20px rgba(0,245,255,0.3)' }}
-              >
-                GEARFORGE
-              </span>
+              <div className="flex flex-col leading-none">
+                <span
+                  className="font-['Orbitron'] text-lg font-black text-white tracking-wider group-hover:text-cyan-400 transition-colors"
+                  style={{ textShadow: '0 0 20px rgba(0,245,255,0.3)' }}
+                >
+                  THE PLAYERS
+                </span>
+                <span className="font-['Share_Tech_Mono'] text-[9px] text-cyan-400/70 tracking-widest">UAE</span>
+              </div>
             </Link>
 
             {/* Desktop Nav */}

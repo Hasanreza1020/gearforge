@@ -21,9 +21,6 @@ export default function CartDrawer() {
   const [couponError, setCouponError] = useState('')
 
   const subtotal = getSubtotal()
-  const freeShippingThreshold = 75
-  const freeShippingProgress = Math.min((subtotal / freeShippingThreshold) * 100, 100)
-  const amountToFree = Math.max(freeShippingThreshold - subtotal, 0)
 
   async function applyCoupon() {
     if (!couponInput.trim()) return
@@ -79,33 +76,14 @@ export default function CartDrawer() {
               </button>
             </div>
 
-            {/* Free shipping progress */}
-            {subtotal < freeShippingThreshold && subtotal > 0 && (
-              <div className="px-6 py-3 bg-cyan-400/5 border-b border-cyan-500/10">
-                <p className="text-xs text-[#5A6478] font-['Rajdhani'] mb-1.5">
-                  Add <span className="text-cyan-400 font-bold">{formatPrice(amountToFree)}</span> more for FREE shipping
-                </p>
-                <div className="h-1 bg-[#080B14] rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${freeShippingProgress}%` }}
-                    className="h-full bg-cyan-400 rounded-full shadow-[0_0_8px_rgba(0,245,255,0.5)]"
-                  />
-                </div>
-              </div>
-            )}
-
-            {subtotal >= freeShippingThreshold && subtotal > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="px-6 py-2.5 bg-cyan-400/10 border-b border-cyan-500/20 flex items-center gap-2"
-              >
-                <Zap className="w-4 h-4 text-cyan-400" />
-                <span className="text-xs font-bold text-cyan-400 font-['Rajdhani'] tracking-wider uppercase">
-                  Free Shipping Unlocked!
+            {/* COD badge */}
+            {subtotal > 0 && (
+              <div className="px-6 py-2.5 bg-[#FFD700]/5 border-b border-[#FFD700]/10 flex items-center gap-2">
+                <Zap className="w-4 h-4 text-[#FFD700]" />
+                <span className="text-xs font-bold text-[#FFD700] font-['Rajdhani'] tracking-wider uppercase">
+                  Cash on Delivery — Pay on arrival
                 </span>
-              </motion.div>
+              </div>
             )}
 
             {/* Items */}
@@ -192,20 +170,17 @@ export default function CartDrawer() {
                     </div>
                   )}
                   <div className="flex justify-between text-[#5A6478]">
-                    <span>Shipping</span>
-                    <span>{getShippingCost() === 0 ? <span className="text-cyan-400">FREE</span> : formatPrice(getShippingCost())}</span>
-                  </div>
-                  <div className="flex justify-between text-[#5A6478]">
-                    <span>Tax (8%)</span><span>{formatPrice(getTax())}</span>
+                    <span>Delivery</span>
+                    <span className="text-[#5A6478]">Calculated at checkout</span>
                   </div>
                   <div className="flex justify-between text-[#E8EAF0] text-sm font-bold pt-2 border-t border-white/10">
-                    <span>Total</span><span className="text-cyan-400">{formatPrice(getTotal())}</span>
+                    <span>Subtotal</span><span className="text-cyan-400">{formatPrice(subtotal)}</span>
                   </div>
                 </div>
 
                 <Link href="/checkout" onClick={closeCart}>
                   <GlowButton fullWidth size="lg" className="mt-2">
-                    Proceed to Checkout →
+                    Checkout — Pay on Delivery →
                   </GlowButton>
                 </Link>
               </div>

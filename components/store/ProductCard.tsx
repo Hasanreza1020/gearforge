@@ -30,6 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [particle, setParticle] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const { addToCart } = useCart()
+  const openCart = useCartStore((s) => s.openCart)
 
   const isOnSale = product.compare_at_price && product.compare_at_price > product.price
   const discountPct = isOnSale
@@ -48,8 +49,10 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault()
+    e.stopPropagation()
     if (product.stock_quantity === 0) return
     addToCart(product)
+    openCart()
     setParticle(true)
     setTimeout(() => setParticle(false), 700)
   }

@@ -26,16 +26,16 @@ const shareTechMono = Share_Tech_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'GearForge — Elite Gaming Gear Store',
-    template: '%s | GearForge',
+    default: 'The Players UAE — Gaming Store',
+    template: '%s | The Players UAE',
   },
-  description: 'Premium gaming peripherals, gear, accessories, and collectibles for elite players. Level up your setup with GearForge.',
-  keywords: ['gaming gear', 'gaming peripherals', 'gaming mice', 'mechanical keyboards', 'gaming headsets', 'gaming store'],
+  description: 'UAE\'s ultimate gaming store. Consoles, controllers, retro games, CDs, headphones, collectibles and more. Cash on delivery across UAE.',
+  keywords: ['gaming store UAE', 'buy consoles UAE', 'retro games UAE', 'gaming accessories Dubai', 'PlayStation UAE', 'Xbox UAE'],
   openGraph: {
     type: 'website',
-    siteName: 'GearForge',
-    title: 'GearForge — Elite Gaming Gear Store',
-    description: 'Premium gaming gear for elite players.',
+    siteName: 'The Players UAE',
+    title: 'The Players UAE — Gaming Store',
+    description: 'UAE\'s ultimate gaming store. Cash on delivery.',
   },
 }
 
