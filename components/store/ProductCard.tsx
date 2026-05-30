@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import NeonBadge from '@/components/ui/NeonBadge'
 import ParticleEffect from '@/components/ui/ParticleEffect'
 import { useCart } from '@/hooks/useCart'
+import { useCartStore } from '@/store/cartStore'
 import { formatPrice } from '@/lib/utils'
 import type { Product } from '@/types'
 
