@@ -11,8 +11,8 @@ export async function POST() {
     const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
     if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-    revalidateTag('products')
-    revalidateTag('categories')
+    revalidateTag('products', 'max')
+    revalidateTag('categories', 'max')
     revalidatePath('/')
     revalidatePath('/shop')
 
