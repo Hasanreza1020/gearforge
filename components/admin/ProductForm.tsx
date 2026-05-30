@@ -82,12 +82,18 @@ export default function ProductForm({ product }: ProductFormProps) {
     try {
       const res = await fetch('/api/upload', { method: 'POST', body: formData })
       const data = await res.json()
+      if (!res.ok) {
+        toast.error(data.error ?? 'Upload failed')
+        return
+      }
       if (data.url) {
         setImages((prev) => [...prev, data.url])
         if (!thumbnail) setThumbnail(data.url)
         toast.success('Image uploaded')
       }
-    } catch { toast.error('Upload failed') }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Upload failed')
+    }
     finally { setUploading(false) }
   }
 
