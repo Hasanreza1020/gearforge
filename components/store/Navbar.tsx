@@ -82,8 +82,8 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Right Icons */}
-            <div className="flex items-center gap-2">
+            {/* Right Icons — always visible */}
+            <div className="flex items-center gap-1">
               {/* Search */}
               <button
                 onClick={toggleSearch}
@@ -93,14 +93,16 @@ export default function Navbar() {
                 <Search className="w-5 h-5" />
               </button>
 
-              {/* Wishlist */}
-              {user && (
-                <Link href="/account" className="p-2 text-[#5A6478] hover:text-[#FF3E6C] transition-colors" aria-label="Wishlist">
-                  <Heart className="w-5 h-5" />
-                </Link>
-              )}
+              {/* Wishlist — always visible; guests go to login */}
+              <Link
+                href={user ? '/account' : '/login'}
+                className="p-2 text-[#5A6478] hover:text-[#FF3E6C] transition-colors"
+                aria-label="Wishlist"
+              >
+                <Heart className="w-5 h-5" />
+              </Link>
 
-              {/* Cart */}
+              {/* Cart — always visible */}
               <button
                 onClick={toggleCart}
                 className="relative p-2 text-[#5A6478] hover:text-cyan-400 transition-colors"
@@ -119,27 +121,34 @@ export default function Navbar() {
                 )}
               </button>
 
-              {/* User */}
+              {/* Profile — always visible */}
               {user ? (
                 <div className="relative group">
-                  <button className="flex items-center gap-2 p-2 text-[#5A6478] hover:text-cyan-400 transition-colors">
+                  <button
+                    className="flex items-center gap-1.5 p-2 text-[#5A6478] hover:text-cyan-400 transition-colors"
+                    aria-label="Account"
+                  >
                     <User className="w-5 h-5" />
-                    {profile?.xp_points !== undefined && (
+                    {profile?.level && (
                       <span className="hidden sm:block font-['Share_Tech_Mono'] text-[10px] text-[#FFD700]">
                         {profile.level}
                       </span>
                     )}
                   </button>
-                  <div className="absolute right-0 top-full mt-1 w-48 bg-[#0D1117] border border-cyan-500/20 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  <div className="absolute right-0 top-full mt-1 w-48 bg-[#0D1117] border border-cyan-500/20 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="px-4 py-2.5 border-b border-white/5">
+                      <p className="text-xs font-['Rajdhani'] font-bold text-[#E8EAF0] truncate">{profile?.full_name ?? 'Player'}</p>
+                      <p className="text-[10px] font-['Share_Tech_Mono'] text-[#5A6478] truncate">{profile?.email}</p>
+                    </div>
                     <Link href="/account" className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#E8EAF0] hover:text-cyan-400 hover:bg-cyan-400/5 transition-colors">
-                      <User className="w-4 h-4" /> Account
+                      <User className="w-4 h-4" /> My Account
                     </Link>
                     <Link href="/orders" className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#E8EAF0] hover:text-cyan-400 hover:bg-cyan-400/5 transition-colors">
-                      <ShoppingCart className="w-4 h-4" /> Orders
+                      <ShoppingCart className="w-4 h-4" /> My Orders
                     </Link>
                     {profile?.role === 'admin' && (
                       <Link href="/admin" className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#FFD700] hover:bg-[#FFD700]/5 transition-colors">
-                        ⚡ Admin
+                        ⚡ Admin Panel
                       </Link>
                     )}
                     <hr className="border-white/10 my-1" />
@@ -154,15 +163,16 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest border border-cyan-400/50 text-cyan-400 rounded hover:bg-cyan-400 hover:text-[#080B14] transition-all duration-200"
+                  className="p-2 text-[#5A6478] hover:text-cyan-400 transition-colors"
+                  aria-label="Login"
                 >
-                  <User className="w-3.5 h-3.5" /> Login
+                  <User className="w-5 h-5" />
                 </Link>
               )}
 
-              {/* Mobile menu button */}
+              {/* Hamburger — mobile only */}
               <button
-                className="lg:hidden p-2 text-[#5A6478] hover:text-[#E8EAF0] transition-colors"
+                className="lg:hidden p-2 text-[#5A6478] hover:text-[#E8EAF0] transition-colors ml-1"
                 onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
                 aria-label="Menu"
               >
