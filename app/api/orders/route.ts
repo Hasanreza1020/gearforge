@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createAdminClient, createServiceClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   try {
-    // Use service client to bypass RLS — supports both guest and logged-in orders
-    const supabase = await createServiceClient()
+    // Use plain admin client (no SSR/cookie wrapper) to truly bypass RLS
+    const supabase = createAdminClient()
     const body = await request.json()
     const { items, shippingAddress, deliveryOptionId, subtotal, shippingCost, discount, tax, total, paymentMethod, userId } = body
 
@@ -58,8 +58,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ orderNumber, orderId: order.id }, { status: 201 })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Failed to create order'
-    console.error('[orders POST]', message)
+    const message = err instanceof Error
+      ? err.message
+      : (err as { message?: string })?.message ?? JSON.stringify(err)
+    console.error('[orders POST]', message, JSON.stringify(err))
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }

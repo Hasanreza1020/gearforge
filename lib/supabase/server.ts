@@ -42,3 +42,10 @@ export async function createServiceClient() {
 export function createAnonClient() {
   return createSupabaseClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 }
+
+// True service-role admin client — bypasses RLS completely, no cookie/session interference
+export function createAdminClient() {
+  return createSupabaseClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  })
+}
