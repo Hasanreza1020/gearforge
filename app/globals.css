@@ -74,12 +74,7 @@ body {
   scrollbar-width: none;
 }
 
-/* Custom cursor */
-@media (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
+/* Custom cursor disabled — using default browser cursor */
 
 /* Animations */
 @keyframes scanner {
