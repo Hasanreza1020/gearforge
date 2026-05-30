@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
-const PROTECTED_ROUTES = ['/orders', '/account', '/checkout']
+const PROTECTED_ROUTES = ['/orders', '/account']
 const ADMIN_ROUTES = ['/admin']
 
 export async function proxy(request: NextRequest) {

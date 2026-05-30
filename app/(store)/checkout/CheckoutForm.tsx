@@ -60,8 +60,8 @@ export default function CheckoutForm() {
   async function onSubmit(data: FormData) {
     setSubmitting(true)
     try {
+      // Guest checkout supported — user_id is null if not logged in
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push('/login?redirect=/checkout'); return }
 
       const selectedOption = deliveryOptions.find((o) => o.id === selectedDelivery)
       const shippingCost = selectedOption?.price ?? 15
@@ -85,7 +85,7 @@ export default function CheckoutForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: user.id,
+          userId: user?.id ?? null,
           items,
           shippingAddress,
           deliveryOptionId: selectedDelivery,

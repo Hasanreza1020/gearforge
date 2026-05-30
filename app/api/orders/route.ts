@@ -3,12 +3,10 @@ import { createServiceClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   try {
+    // Use service client to bypass RLS — supports both guest and logged-in orders
     const supabase = await createServiceClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const body = await request.json()
-    const { items, shippingAddress, deliveryOptionId, subtotal, shippingCost, discount, tax, total, paymentMethod } = body
+    const { items, shippingAddress, deliveryOptionId, subtotal, shippingCost, discount, tax, total, paymentMethod, userId } = body
 
     // Generate order number
     const date = new Date()
@@ -19,7 +17,7 @@ export async function POST(request: NextRequest) {
       .from('orders')
       .insert({
         order_number: orderNumber,
-        user_id: user.id,
+        user_id: userId ?? null,
         status: paymentMethod === 'cod' ? 'pending' : 'payment_pending',
         subtotal,
         shipping_cost: shippingCost,
@@ -53,11 +51,10 @@ export async function POST(request: NextRequest) {
       await supabase.rpc('decrement_stock', { product_id: item.product_id, qty: item.quantity }).maybeSingle()
     }
 
-    // Update profile totals
-    await supabase
-      .from('profiles')
-      .update({ total_orders: supabase.rpc('increment', { x: 1 }) as unknown as number })
-      .eq('id', user.id)
+    // Update profile order count if logged in
+    if (userId) {
+      await supabase.rpc('increment_profile_orders', { uid: userId }).maybeSingle()
+    }
 
     return NextResponse.json({ orderNumber, orderId: order.id }, { status: 201 })
   } catch (err) {
