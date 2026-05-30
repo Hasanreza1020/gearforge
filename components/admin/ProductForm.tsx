@@ -121,6 +121,9 @@ export default function ProductForm({ product }: ProductFormProps) {
         toast.success('Product created')
       }
 
+      // Bust the frontend cache so new products/images appear immediately
+      await fetch('/api/revalidate', { method: 'POST' })
+
       router.push('/admin/products')
       router.refresh()
     } catch (err: unknown) {
