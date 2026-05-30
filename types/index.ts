@@ -129,14 +129,21 @@ export interface OrderItem {
 
 export interface ShippingAddress {
   full_name: string
-  email: string
-  line1: string
-  line2?: string
-  city: string
-  state?: string
-  postal_code: string
-  country: string
+  email?: string
   phone?: string
+  // UAE fields
+  emirate?: string
+  area?: string
+  building?: string
+  street?: string
+  landmark?: string
+  country: string
+  // Legacy fields (kept for backward compat)
+  line1?: string
+  line2?: string
+  city?: string
+  state?: string
+  postal_code?: string
 }
 
 export interface DeliveryOption {
