@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Plus, Edit, Package } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import GlowButton from '@/components/ui/GlowButton'
+import DeleteProductButton from '@/components/admin/DeleteProductButton'
 import { formatPrice } from '@/lib/utils'
 import type { Product } from '@/types'
 
@@ -98,11 +99,14 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <Link href={`/admin/products/${product.id}`}>
-                      <button className="p-1.5 text-[#5A6478] hover:text-cyan-400 transition-colors" aria-label="Edit">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                    </Link>
+                    <div className="flex items-center gap-1">
+                      <Link href={`/admin/products/${product.id}`}>
+                        <button className="p-1.5 text-[#5A6478] hover:text-cyan-400 transition-colors" aria-label="Edit">
+                          <Edit className="w-4 h-4" />
+                        </button>
+                      </Link>
+                      <DeleteProductButton productId={product.id} productName={product.name} />
+                    </div>
                   </td>
                 </tr>
               ))}
