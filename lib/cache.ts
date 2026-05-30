@@ -1,10 +1,10 @@
 import { unstable_cache } from 'next/cache'
-import { createClient } from './supabase/server'
+import { createAnonClient } from './supabase/server'
 import type { ProductFilters } from '@/types'
 
 export const getCachedProducts = unstable_cache(
   async (filters: ProductFilters = {}) => {
-    const supabase = await createClient()
+    const supabase = createAnonClient()
     let query = supabase
       .from('products')
       .select('*, category:categories(*)')
@@ -46,7 +46,7 @@ export const getCachedProducts = unstable_cache(
 
 export const getCachedProduct = unstable_cache(
   async (slug: string) => {
-    const supabase = await createClient()
+    const supabase = createAnonClient()
     const { data, error } = await supabase
       .from('products')
       .select('*, category:categories(*)')
@@ -62,7 +62,7 @@ export const getCachedProduct = unstable_cache(
 
 export const getCachedCategories = unstable_cache(
   async () => {
-    const supabase = await createClient()
+    const supabase = createAnonClient()
     const { data, error } = await supabase
       .from('categories')
       .select('*')
@@ -76,7 +76,7 @@ export const getCachedCategories = unstable_cache(
 
 export const getCachedFeaturedProducts = unstable_cache(
   async () => {
-    const supabase = await createClient()
+    const supabase = createAnonClient()
     const { data, error } = await supabase
       .from('products')
       .select('*, category:categories(*)')
@@ -93,7 +93,7 @@ export const getCachedFeaturedProducts = unstable_cache(
 
 export const getCachedDeliveryOptions = unstable_cache(
   async () => {
-    const supabase = await createClient()
+    const supabase = createAnonClient()
     const { data, error } = await supabase
       .from('delivery_options')
       .select('*')
