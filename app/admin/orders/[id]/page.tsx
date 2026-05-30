@@ -100,7 +100,7 @@ export default function AdminOrderDetailPage() {
             )}
             <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#FFD700]/10 border border-[#FFD700]/20">
               <span className="text-[#FFD700] font-['Rajdhani'] font-bold text-xs uppercase tracking-wider">
-                💵 {order.metadata?.payment_method === 'cod' ? 'Cash on Delivery' : order.metadata?.payment_method ?? 'COD'}
+                {`💵 ${(order.metadata as Record<string, string>)?.payment_method === 'cod' ? 'Cash on Delivery' : ((order.metadata as Record<string, string>)?.payment_method ?? 'COD')}`}
               </span>
             </div>
           </div>
