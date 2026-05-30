@@ -84,17 +84,53 @@ export default function AdminOrderDetailPage() {
 
         {/* Customer & Address */}
         <div className="space-y-4">
+          {/* Customer info — falls back to shipping address for guests */}
           <div className="bg-[#0D1117] border border-white/5 rounded-xl p-5">
             <h2 className="font-['Orbitron'] text-xs font-bold text-[#5A6478] tracking-widest mb-3">CUSTOMER</h2>
-            <p className="font-['Rajdhani'] font-semibold text-[#E8EAF0] text-sm">{(order.user as { full_name?: string })?.full_name ?? '—'}</p>
-            <p className="text-[#5A6478] font-['Share_Tech_Mono'] text-xs">{(order.user as { email?: string })?.email ?? '—'}</p>
+            <p className="font-['Rajdhani'] font-bold text-[#E8EAF0] text-sm">
+              {(order.user as { full_name?: string })?.full_name ?? order.shipping_address?.full_name ?? '—'}
+            </p>
+            <p className="text-[#5A6478] font-['Share_Tech_Mono'] text-xs mt-0.5">
+              {(order.user as { email?: string })?.email ?? order.shipping_address?.email ?? '—'}
+            </p>
+            {order.shipping_address?.phone && (
+              <p className="text-cyan-400 font-['Share_Tech_Mono'] text-xs mt-0.5">
+                📞 {order.shipping_address.phone}
+              </p>
+            )}
+            <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#FFD700]/10 border border-[#FFD700]/20">
+              <span className="text-[#FFD700] font-['Rajdhani'] font-bold text-xs uppercase tracking-wider">
+                💵 {order.metadata?.payment_method === 'cod' ? 'Cash on Delivery' : order.metadata?.payment_method ?? 'COD'}
+              </span>
+            </div>
           </div>
+
+          {/* UAE Shipping Address */}
           {order.shipping_address && (
             <div className="bg-[#0D1117] border border-white/5 rounded-xl p-5">
-              <h2 className="font-['Orbitron'] text-xs font-bold text-[#5A6478] tracking-widest mb-3">SHIPPING ADDRESS</h2>
-              <p className="font-['Rajdhani'] text-[#E8EAF0] text-sm">{order.shipping_address.full_name}</p>
-              <p className="text-[#5A6478] font-['Rajdhani'] text-sm">{order.shipping_address.line1}</p>
-              <p className="text-[#5A6478] font-['Rajdhani'] text-sm">{order.shipping_address.city}, {order.shipping_address.country} {order.shipping_address.postal_code}</p>
+              <h2 className="font-['Orbitron'] text-xs font-bold text-[#5A6478] tracking-widest mb-3">DELIVERY ADDRESS</h2>
+              <div className="space-y-1 font-['Rajdhani'] text-sm">
+                {order.shipping_address.building && (
+                  <p className="text-[#E8EAF0]">{order.shipping_address.building}</p>
+                )}
+                {order.shipping_address.area && (
+                  <p className="text-[#5A6478]">{order.shipping_address.area}</p>
+                )}
+                {order.shipping_address.street && (
+                  <p className="text-[#5A6478]">{order.shipping_address.street}</p>
+                )}
+                {order.shipping_address.landmark && (
+                  <p className="text-[#5A6478] italic text-xs">Near: {order.shipping_address.landmark}</p>
+                )}
+                <p className="text-[#E8EAF0] font-bold">
+                  {order.shipping_address.emirate ?? order.shipping_address.city}
+                  {order.shipping_address.country ? `, ${order.shipping_address.country}` : ''}
+                </p>
+                {/* Legacy address format fallback */}
+                {!order.shipping_address.emirate && order.shipping_address.line1 && (
+                  <p className="text-[#5A6478]">{order.shipping_address.line1}</p>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -121,7 +157,7 @@ export default function AdminOrderDetailPage() {
           </div>
           <div>
             <label className="block text-xs font-['Rajdhani'] font-bold text-[#5A6478] uppercase tracking-wider mb-1">Carrier</label>
-            <input value={carrier} onChange={(e) => setCarrier(e.target.value)} placeholder="UPS, FedEx..."
+            <input value={carrier} onChange={(e) => setCarrier(e.target.value)} placeholder="Aramex, Fetchr..."
               className="w-full bg-[#080B14] border border-white/10 rounded px-3 py-2.5 text-sm text-[#E8EAF0] placeholder:text-[#5A6478] focus:outline-none focus:border-cyan-400/50 font-['Rajdhani']" />
           </div>
         </div>
